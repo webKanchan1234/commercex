@@ -4,13 +4,13 @@ spring:
     name: order-service
 
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://${CONFIG_SERVER_HOST:localhost}:8888
 
 
 commercex:
   services:
     inventory:
-      url: http://localhost:8083
+      url: http://${INVENTORY_HOST:localhost}:8083
 
 logging:
   pattern:
@@ -22,3 +22,9 @@ logging:
       %logger{36}
       -
       %msg%n
+
+
+order-service:
+  build:
+    context: .
+    dockerfile: services/order-service/Dockerfile

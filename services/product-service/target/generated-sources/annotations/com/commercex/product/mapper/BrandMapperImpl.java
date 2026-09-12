@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-08-27T12:55:11+0530",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 24.0.1 (Homebrew)"
+    date = "2026-09-13T01:19:08+0530",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class BrandMapperImpl implements BrandMapper {
@@ -23,9 +23,9 @@ public class BrandMapperImpl implements BrandMapper {
 
         Brand brand = new Brand();
 
+        brand.setDescription( request.getDescription() );
         brand.setName( request.getName() );
         brand.setSlug( request.getSlug() );
-        brand.setDescription( request.getDescription() );
 
         return brand;
     }
@@ -38,11 +38,11 @@ public class BrandMapperImpl implements BrandMapper {
 
         BrandResponse brandResponse = new BrandResponse();
 
+        brandResponse.setActive( brand.getActive() );
+        brandResponse.setDescription( brand.getDescription() );
         brandResponse.setId( brand.getId() );
         brandResponse.setName( brand.getName() );
         brandResponse.setSlug( brand.getSlug() );
-        brandResponse.setDescription( brand.getDescription() );
-        brandResponse.setActive( brand.getActive() );
 
         return brandResponse;
     }
@@ -53,17 +53,17 @@ public class BrandMapperImpl implements BrandMapper {
             return;
         }
 
+        if ( request.getActive() != null ) {
+            brand.setActive( request.getActive() );
+        }
+        if ( request.getDescription() != null ) {
+            brand.setDescription( request.getDescription() );
+        }
         if ( request.getName() != null ) {
             brand.setName( request.getName() );
         }
         if ( request.getSlug() != null ) {
             brand.setSlug( request.getSlug() );
-        }
-        if ( request.getDescription() != null ) {
-            brand.setDescription( request.getDescription() );
-        }
-        if ( request.getActive() != null ) {
-            brand.setActive( request.getActive() );
         }
     }
 }

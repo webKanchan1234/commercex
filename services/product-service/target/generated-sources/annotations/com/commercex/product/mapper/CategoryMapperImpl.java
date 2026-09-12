@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-08-27T12:55:11+0530",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 24.0.1 (Homebrew)"
+    date = "2026-09-13T01:19:07+0530",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class CategoryMapperImpl implements CategoryMapper {
@@ -23,9 +23,9 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         Category category = new Category();
 
+        category.setDescription( request.getDescription() );
         category.setName( request.getName() );
         category.setSlug( request.getSlug() );
-        category.setDescription( request.getDescription() );
 
         return category;
     }
@@ -38,11 +38,11 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         CategoryResponse categoryResponse = new CategoryResponse();
 
+        categoryResponse.setActive( category.getActive() );
+        categoryResponse.setDescription( category.getDescription() );
         categoryResponse.setId( category.getId() );
         categoryResponse.setName( category.getName() );
         categoryResponse.setSlug( category.getSlug() );
-        categoryResponse.setDescription( category.getDescription() );
-        categoryResponse.setActive( category.getActive() );
 
         return categoryResponse;
     }
@@ -53,17 +53,17 @@ public class CategoryMapperImpl implements CategoryMapper {
             return;
         }
 
+        if ( request.getActive() != null ) {
+            category.setActive( request.getActive() );
+        }
+        if ( request.getDescription() != null ) {
+            category.setDescription( request.getDescription() );
+        }
         if ( request.getName() != null ) {
             category.setName( request.getName() );
         }
         if ( request.getSlug() != null ) {
             category.setSlug( request.getSlug() );
-        }
-        if ( request.getDescription() != null ) {
-            category.setDescription( request.getDescription() );
-        }
-        if ( request.getActive() != null ) {
-            category.setActive( request.getActive() );
         }
     }
 }

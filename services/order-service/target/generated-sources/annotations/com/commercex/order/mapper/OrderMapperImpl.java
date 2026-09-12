@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-08-16T18:09:10+0530",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.11 (Homebrew)"
+    date = "2026-09-13T01:19:04+0530",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class OrderMapperImpl implements OrderMapper {
@@ -27,8 +27,8 @@ public class OrderMapperImpl implements OrderMapper {
 
         Order.OrderBuilder order = Order.builder();
 
-        order.customerId( request.getCustomerId() );
         order.currency( request.getCurrency() );
+        order.customerId( request.getCustomerId() );
         order.items( orderItemRequestListToOrderItemList( request.getItems() ) );
 
         return order.build();
@@ -42,14 +42,14 @@ public class OrderMapperImpl implements OrderMapper {
 
         OrderResponse.OrderResponseBuilder orderResponse = OrderResponse.builder();
 
-        orderResponse.id( order.getId() );
-        orderResponse.orderNumber( order.getOrderNumber() );
+        orderResponse.createdAt( order.getCreatedAt() );
+        orderResponse.currency( order.getCurrency() );
         orderResponse.customerId( order.getCustomerId() );
+        orderResponse.id( order.getId() );
+        orderResponse.items( orderItemListToOrderItemResponseList( order.getItems() ) );
+        orderResponse.orderNumber( order.getOrderNumber() );
         orderResponse.status( order.getStatus() );
         orderResponse.totalAmount( order.getTotalAmount() );
-        orderResponse.currency( order.getCurrency() );
-        orderResponse.items( orderItemListToOrderItemResponseList( order.getItems() ) );
-        orderResponse.createdAt( order.getCreatedAt() );
 
         return orderResponse.build();
     }
@@ -62,9 +62,9 @@ public class OrderMapperImpl implements OrderMapper {
 
         OrderItem.OrderItemBuilder orderItem = OrderItem.builder();
 
+        orderItem.price( request.getPrice() );
         orderItem.productId( request.getProductId() );
         orderItem.productName( request.getProductName() );
-        orderItem.price( request.getPrice() );
         orderItem.quantity( request.getQuantity() );
 
         return orderItem.build();
@@ -79,9 +79,9 @@ public class OrderMapperImpl implements OrderMapper {
         OrderItemResponse.OrderItemResponseBuilder orderItemResponse = OrderItemResponse.builder();
 
         orderItemResponse.id( item.getId() );
+        orderItemResponse.price( item.getPrice() );
         orderItemResponse.productId( item.getProductId() );
         orderItemResponse.productName( item.getProductName() );
-        orderItemResponse.price( item.getPrice() );
         orderItemResponse.quantity( item.getQuantity() );
         orderItemResponse.subtotal( item.getSubtotal() );
 

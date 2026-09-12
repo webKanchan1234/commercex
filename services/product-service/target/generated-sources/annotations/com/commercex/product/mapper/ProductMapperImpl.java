@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-08-27T12:55:11+0530",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 24.0.1 (Homebrew)"
+    date = "2026-09-13T01:19:08+0530",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class ProductMapperImpl implements ProductMapper {
@@ -25,11 +25,11 @@ public class ProductMapperImpl implements ProductMapper {
 
         Product product = new Product();
 
-        product.setName( request.getName() );
-        product.setSlug( request.getSlug() );
         product.setDescription( request.getDescription() );
-        product.setPrice( request.getPrice() );
         product.setDiscountPrice( request.getDiscountPrice() );
+        product.setName( request.getName() );
+        product.setPrice( request.getPrice() );
+        product.setSlug( request.getSlug() );
         product.setStatus( request.getStatus() );
         product.setStockTracked( request.getStockTracked() );
 
@@ -46,13 +46,13 @@ public class ProductMapperImpl implements ProductMapper {
 
         productResponse.setBrand( productBrandName( product ) );
         productResponse.setCategory( productCategoryName( product ) );
-        productResponse.setId( product.getId() );
-        productResponse.setSku( product.getSku() );
-        productResponse.setName( product.getName() );
-        productResponse.setSlug( product.getSlug() );
         productResponse.setDescription( product.getDescription() );
-        productResponse.setPrice( product.getPrice() );
         productResponse.setDiscountPrice( product.getDiscountPrice() );
+        productResponse.setId( product.getId() );
+        productResponse.setName( product.getName() );
+        productResponse.setPrice( product.getPrice() );
+        productResponse.setSku( product.getSku() );
+        productResponse.setSlug( product.getSlug() );
         productResponse.setStatus( product.getStatus() );
 
         return productResponse;
@@ -64,20 +64,20 @@ public class ProductMapperImpl implements ProductMapper {
             return;
         }
 
-        if ( request.getName() != null ) {
-            product.setName( request.getName() );
-        }
-        if ( request.getSlug() != null ) {
-            product.setSlug( request.getSlug() );
-        }
         if ( request.getDescription() != null ) {
             product.setDescription( request.getDescription() );
+        }
+        if ( request.getDiscountPrice() != null ) {
+            product.setDiscountPrice( request.getDiscountPrice() );
+        }
+        if ( request.getName() != null ) {
+            product.setName( request.getName() );
         }
         if ( request.getPrice() != null ) {
             product.setPrice( request.getPrice() );
         }
-        if ( request.getDiscountPrice() != null ) {
-            product.setDiscountPrice( request.getDiscountPrice() );
+        if ( request.getSlug() != null ) {
+            product.setSlug( request.getSlug() );
         }
         if ( request.getStatus() != null ) {
             product.setStatus( request.getStatus() );
