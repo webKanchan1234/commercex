@@ -1,0 +1,10 @@
+com/commercex/auth/AuthServiceApplicationTests.class
+com/commercex/auth/TestDataFactory.class
+com/commercex/auth/LoginIT.class
+com/commercex/auth/ForgotPasswordIT.class
+com/commercex/auth/RefreshTokenIT.class
+com/commercex/auth/SessionIT.class
+com/commercex/auth/LogoutIT.class
+com/commercex/auth/AbstractIntegrationTest.class
+com/commercex/auth/AuthControllerIT.class
+com/commercex/auth/ContextIT.class

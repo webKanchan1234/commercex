@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+commercex:
+  security:
+    jwt:
+      secret: 7RZQjR6r8mM2tV9nW5yP4kL8xF1sD6aJ3qN7bH2cE5gU9zX4v

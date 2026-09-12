@@ -1,0 +1,22 @@
+FROM maven:3.9.10-eclipse-temurin-21 AS builder
+
+WORKDIR /build
+
+COPY . .
+
+RUN mvn clean package \
+    -pl infrastructure/discovery-server \
+    -am \
+    -DskipTests
+
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=builder \
+/build/infrastructure/discovery-server/target/discovery-server-*.jar \
+app.jar
+
+EXPOSE 8761
+
+ENTRYPOINT ["java","-jar","app.jar"]

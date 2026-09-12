@@ -1,0 +1,10 @@
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/AbstractIntegrationTest.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/AuthControllerIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/AuthServiceApplicationTests.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/ContextIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/ForgotPasswordIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/LoginIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/LogoutIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/RefreshTokenIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/SessionIT.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/services/auth-service/src/test/java/com/commercex/auth/TestDataFactory.java

@@ -1,0 +1,29 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+local.file_match "commercex_logs" {
+  path_targets = [
+    {
+      "__path__"    = "/commercex-logs/product-service.log",
+      "service"     = "product-service",
+      "environment" = "local",
+    },
+  ]
+
+  sync_period = "5s"
+}
+
+loki.source.file "commercex" {
+  targets    = local.file_match.commercex_logs.targets
+  forward_to = [loki.write.commercex.receiver]
+
+  tail_from_end = true
+}
+
+loki.write "commercex" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

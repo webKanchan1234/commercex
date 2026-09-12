@@ -1,0 +1,98 @@
+services:
+
+  loki:
+    image: grafana/loki:3.5.0
+    container_name: commercex-loki
+
+    ports:
+      - "3100:3100"
+
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+
+    command:
+      - "-config.file=/etc/loki/loki-config.yml"
+
+    restart: unless-stopped
+
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    container_name: commercex-grafana
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+    depends_on:
+      - loki
+
+    restart: unless-stopped
+
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: commercex-alloy
+
+    ports:
+      - "12345:12345"
+
+    volumes:
+      - ../alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - ../../logs:/commercex-logs:ro
+
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+
+    depends_on:
+      - loki
+
+    restart: unless-stopped
+
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: commercex-tempo
+
+    command:
+      - "-config.file=/etc/tempo/tempo.yml"
+
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo/tempo.yml:ro
+      - tempo-data:/var/tempo
+
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+
+    restart: unless-stopped
+
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: commercex-prometheus
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+    restart: unless-stopped
+
+volumes:
+  loki-data:
+  grafana-data:
+  tempo-data:
+  prometheus-data:

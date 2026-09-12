@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: auth-service
+
+  config:
+    import: optional:configserver:http://${CONFIG_SERVER_HOST:localhost}:8888
+
+session:
+  max-active-sessions: 5
+  idle-timeout-minutes: 30
+
+springdoc:
+  api-docs:
+    enabled: true
+
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+    displayRequestDuration: true
+    docExpansion: none
+
+logging:
+  pattern:
+    console: >
+      %d{yyyy-MM-dd HH:mm:ss.SSS}
+      [%thread]
+      %-5level
+      [%X{X-Correlation-ID}]
+      %logger{36}
+      -
+      %msg%n

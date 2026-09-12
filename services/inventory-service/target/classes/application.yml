@@ -1,0 +1,28 @@
+spring:
+  config:
+    import: optional:configserver:http://${CONFIG_SERVER_HOST:localhost}:8888
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  pattern:
+    console: >
+      %d{yyyy-MM-dd HH:mm:ss.SSS}
+      [%thread]
+      %-5level
+      [%X{X-Correlation-ID}]
+      %logger{36}
+      -
+      %msg%n
+      
+inventory-service:
+  build:
+    context: .
+    dockerfile: services/inventory-service/Dockerfile

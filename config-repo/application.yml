@@ -1,0 +1,5 @@
+message: Common Configuration
+
+logging:
+  level:
+    root: INFO

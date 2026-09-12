@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!-- ============================= -->
+    <!-- Console JSON Logging           -->
+    <!-- ============================= -->
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+
+            <providers>
+
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                </timestamp>
+
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+
+                <!-- MDC -->
+                <mdc/>
+
+                <!-- Message -->
+                <message/>
+
+                <!-- Exception -->
+                <stackTrace/>
+
+            </providers>
+
+        </encoder>
+
+    </appender>
+
+
+    <!-- ============================= -->
+    <!-- File JSON Logging               -->
+    <!-- ============================= -->
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>./logs/product-service.log</file>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ./logs/product-service.log.%d{yyyy-MM-dd}.gz
+            </fileNamePattern>
+
+            <maxHistory>30</maxHistory>
+
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+
+            <providers>
+
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                </timestamp>
+
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+
+                <!--
+                    IMPORTANT:
+                    This writes everything currently stored in MDC.
+                    For example:
+                    correlationId
+                    trace_id
+                    span_id
+                -->
+                <mdc/>
+
+                <message/>
+
+                <stackTrace/>
+
+            </providers>
+
+        </encoder>
+
+    </appender>
+
+
+    <!-- ============================= -->
+    <!-- Root Logger                     -->
+    <!-- ============================= -->
+
+    <root level="INFO">
+
+        <appender-ref ref="CONSOLE"/>
+
+        <appender-ref ref="FILE"/>
+
+    </root>
+
+</configuration>

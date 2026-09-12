@@ -1,0 +1,384 @@
+services:
+
+  # =========================================================
+  # CONFIG SERVER
+  # =========================================================
+
+  config-server:
+
+    build:
+      context: .
+      dockerfile: Dockerfile.config
+
+    container_name: commercex-config
+
+    ports:
+      - "8888:8888"
+
+    networks:
+      - commercex-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "-q",
+          "http://localhost:8888/actuator/health"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  # =========================================================
+  # DISCOVERY SERVER
+  # =========================================================
+
+  discovery-server:
+
+    build:
+      context: .
+      dockerfile: Dockerfile.discovery
+
+    container_name: commercex-discovery
+
+    depends_on:
+      config-server:
+        condition: service_healthy
+
+    environment:
+      CONFIG_SERVER_HOST: config-server
+
+    ports:
+      - "8761:8761"
+
+    networks:
+      - commercex-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "-q",
+          "http://localhost:8761/"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  # =========================================================
+  # AUTH SERVICE
+  # =========================================================
+
+  # =========================================================
+  # AUTH SERVICE
+  # =========================================================
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+
+    container_name: commercex-auth
+
+    depends_on:
+      config-server:
+        condition: service_healthy
+
+      discovery-server:
+        condition: service_healthy
+
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      EUREKA_HOST: discovery-server
+
+      DB_HOST: host.docker.internal
+      DB_USERNAME: postgres
+      DB_PASSWORD: root1234
+
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+
+      JWT_SECRET: ${JWT_SECRET}
+
+    ports:
+      - "8081:8081"
+
+    networks:
+      - commercex-network
+
+  # =========================================================
+  # REDIS
+  # =========================================================
+
+  redis:
+
+    image: redis:7.4
+
+    container_name: commercex-redis
+
+    ports:
+      - "6379:6379"
+
+    networks:
+      - commercex-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "ping"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+
+  # =========================================================
+  # TEMPO
+  # =========================================================
+
+  tempo:
+
+    image: grafana/tempo:latest
+
+    container_name: commercex-tempo
+
+    command:
+      - "-config.file=/etc/tempo/tempo.yml"
+
+    volumes:
+
+      - ./docker/monitoring/tempo/tempo.yml:/etc/tempo/tempo.yml:ro
+
+      - tempo-data:/var/tempo
+
+    ports:
+
+      - "3200:3200"
+
+      - "4317:4317"
+
+      - "4318:4318"
+
+    networks:
+      - commercex-network
+
+
+  # =========================================================
+  # PRODUCT SERVICE
+  # =========================================================
+
+  product-service:
+
+    build:
+      context: .
+      dockerfile: services/product-service/Dockerfile
+
+    container_name: commercex-product
+
+    depends_on:
+
+      config-server:
+        condition: service_healthy
+
+      discovery-server:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+      tempo:
+        condition: service_started
+
+    environment:
+
+      CONFIG_SERVER_HOST: config-server
+
+      EUREKA_HOST: discovery-server
+
+      DB_HOST: host.docker.internal
+
+      REDIS_HOST: redis
+
+      TEMPO_HOST: tempo
+
+    ports:
+      - "8082:8082"
+
+    networks:
+      - commercex-network
+
+
+  # =========================================================
+  # INVENTORY SERVICE
+  # =========================================================
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: services/inventory-service/Dockerfile
+
+    container_name: commercex-inventory
+
+    depends_on:
+
+      config-server:
+        condition: service_healthy
+
+      discovery-server:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+      tempo:
+        condition: service_started
+
+    environment:
+
+      CONFIG_SERVER_HOST: config-server
+
+      EUREKA_HOST: discovery-server
+
+      DB_HOST: host.docker.internal
+      DB_USERNAME: postgres
+      DB_PASSWORD: root1234
+
+      REDIS_HOST: redis
+
+      TEMPO_HOST: tempo
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/commercex_inventory
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root1234
+
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+    ports:
+      - "8083:8083"
+
+    networks:
+      - commercex-network
+
+
+  # =========================================================
+  # ORDER SERVICE
+  # =========================================================
+
+  order-service:
+
+    build:
+      context: .
+      dockerfile: services/order-service/Dockerfile
+
+    container_name: commercex-order
+
+    depends_on:
+
+      config-server:
+        condition: service_healthy
+
+      discovery-server:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+      tempo:
+        condition: service_started
+
+    environment:
+
+      CONFIG_SERVER_HOST: config-server
+
+      EUREKA_HOST: discovery-server
+
+      DB_HOST: host.docker.internal
+      DB_USERNAME: root
+      DB_PASSWORD: root1234
+
+      REDIS_HOST: redis
+
+      TEMPO_HOST: tempo
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/commercex_order
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root1234
+
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+    ports:
+      - "8084:8084"
+
+    networks:
+      - commercex-network
+
+
+  # =========================================================
+  # API GATEWAY
+  # =========================================================
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: infrastructure/api-gateway/Dockerfile
+
+    container_name: commercex-gateway
+
+    depends_on:
+      config-server:
+        condition: service_started
+
+      discovery-server:
+        condition: service_started
+
+      auth-service:
+        condition: service_started
+
+      product-service:
+        condition: service_started
+
+      inventory-service:
+        condition: service_started
+
+      order-service:
+        condition: service_started
+
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      EUREKA_HOST: discovery-server
+      TEMPO_HOST: tempo
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - commercex-network
+
+
+# =========================================================
+# NETWORK
+# =========================================================
+
+networks:
+
+  commercex-network:
+    driver: bridge
+
+
+# =========================================================
+# VOLUMES
+# =========================================================
+
+volumes:
+
+  tempo-data:

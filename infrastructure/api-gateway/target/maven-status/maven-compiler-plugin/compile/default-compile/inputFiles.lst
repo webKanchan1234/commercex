@@ -1,0 +1,8 @@
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/ApiGatewayApplication.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/config/GatewayDebugConfig.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/filter/CorrelationIdFilter.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/filter/CorrelationIdGlobalFilter.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/filter/RequestLoggingFilter.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/security/JwtAuthenticationConverter.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/security/JwtConfig.java
+/Users/kanchankumar/Desktop/project/microservices/commercex/infrastructure/api-gateway/src/main/java/com/commercex/gateway/security/SecurityConfig.java

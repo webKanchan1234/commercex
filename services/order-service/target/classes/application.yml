@@ -1,0 +1,24 @@
+spring:
+
+  application:
+    name: order-service
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+
+commercex:
+  services:
+    inventory:
+      url: http://localhost:8083
+
+logging:
+  pattern:
+    console: >
+      %d{yyyy-MM-dd HH:mm:ss.SSS}
+      [%thread]
+      %-5level
+      [%X{X-Correlation-ID}]
+      %logger{36}
+      -
+      %msg%n
